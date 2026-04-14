@@ -1,0 +1,31 @@
+<p>my-sessions works!</p>
+<div class="my-sessions">
+  <h2>Мои записи</h2>
+
+  @if (loading) {
+    <p class="loading">Загрузка...</p>
+  }
+
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  @if (!loading && sessions.length === 0) {
+    <p class="empty">Вы не записаны ни на одну сессию.</p>
+  }
+
+  @for (session of sessions; track session.id) {
+    <div class="session-card">
+      <h3>{{ session.title }}</h3>
+      <p class="course">{{ session.course_name }}</p>
+      <p>📅 {{ session.date }} | {{ session.start_time }} — {{ session.end_time }}</p>
+      <p>📍 {{ session.location }}</p>
+      <p>Свободных мест: {{ session.spots_remaining }}</p>
+      @if (session.is_active) {
+        <span class="status confirmed">Активна</span>
+      } @else {
+        <span class="status cancelled">Неактивна</span>
+      }
+    </div>
+  }
+</div>

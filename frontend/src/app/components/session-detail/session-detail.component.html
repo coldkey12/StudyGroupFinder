@@ -1,0 +1,49 @@
+<div class="session-detail">
+  @if (loading) { <p class="loading">Загрузка...</p> }
+  @if (error) { <p class="error">{{ error }}</p> }
+
+  @if (session) {
+    <div class="session-header">
+      <h2>{{ session.title }}</h2>
+      <p class="meta">{{ session.course_name }} · {{ session.creator_name }}</p>
+      <p>📅 {{ session.date }} | {{ session.start_time }} — {{ session.end_time }}</p>
+      <p>📍 {{ session.location }}</p>
+      <p>Мест: {{ session.spots_remaining }} из {{ session.max_participants }}</p>
+    </div>
+
+    <!-- RSVP кнопки -->
+    <div class="rsvp-block">
+      @if (!session.is_joined) {
+        <button class="btn-join" (click)="join()">Записаться</button>
+      } @else {
+        <button class="btn-leave" (click)="leave()">Отменить запись</button>
+      }
+    </div>
+
+    <!-- Участники -->
+    <div class="participants-block">
+      <h3>Участники ({{ participants.length }})</h3>
+      @for (p of participants; track p.id) {
+        <span class="participant">{{ p.username }}</span>
+      }
+    </div>
+
+    <!-- Комментарии -->
+    <div class="comments-block">
+      <h3>Комментарии</h3>
+
+      @for (comment of comments; track comment.id) {
+        <div class="comment-card">
+          <span class="comment-author">{{ comment.author.username }}</span>
+          <p>{{ comment.text }}</p>
+          <button class="btn-delete" (click)="removeComment(comment.id)">Удалить</button>
+        </div>
+      }
+
+      <div class="comment-form">
+        <textarea [(ngModel)]="commentText" placeholder="Написать комментарий..." rows="3"></textarea>
+        <button class="btn-send" (click)="sendComment()">Отправить</button>
+      </div>
+    </div>
+  }
+</div>

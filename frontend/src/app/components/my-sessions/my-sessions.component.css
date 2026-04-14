@@ -1,0 +1,51 @@
+.my-sessions {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.session-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.session-card h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.2rem;
+  color: #1a1a2e;
+}
+
+.course {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.confirmed { background: #d4edda; color: #155724; }
+.cancelled  { background: #f8d7da; color: #721c24; }
+
+.loading, .empty { color: #888; font-style: italic; }
+.error { color: #c0392b; }
+
+@media (max-width: 600px) {
+  .session-card { padding: 1rem; }
+}
