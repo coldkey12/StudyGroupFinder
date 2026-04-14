@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { CommentService, Comment } from '../../services/comment.service';
+import { CommentService, Comment } from '../../core/services/comment.service';
 
 interface Session {
   id: string;
