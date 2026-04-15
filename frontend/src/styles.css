@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  height: 100vh;
+
+  background: linear-gradient(135deg, #ff7e5f, #e84393, #6c5ce7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

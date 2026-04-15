@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="card">
+
+    <!-- Левая часть -->
+    <div class="left">
+      <div class="blob"></div>
+      <div class="blob small"></div>
+    </div>
+
+    <!-- Правая часть -->
+    <div class="right">
+      <h2>Create Account</h2>
+
+      <input [(ngModel)]="username" placeholder="Username" />
+      <input [(ngModel)]="email" placeholder="Email" />
+      <input [(ngModel)]="password" type="password" placeholder="Password" />
+      <input [(ngModel)]="password_confirm" type="password" placeholder="Confirm Password" />
+
+      <button (click)="register()">REGISTER</button>
+
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }
+
+      <p class="link">
+        Already have an account?
+        <a routerLink="/login">Login →</a>
+      </p>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,29 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e3a8a;
+  color: white;
+  padding: 14px 24px;
+}
+
+.logo a,
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-right: 16px;
+}
+
+.username {
+  margin-right: 12px;
+  font-weight: 600;
+}
+
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: white;
+  color: #1e3a8a;
+}
