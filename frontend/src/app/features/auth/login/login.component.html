@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="card">
+
+    <div class="left">
+      <div class="blob"></div>
+      <div class="blob small"></div>
+    </div>
+
+    <div class="right">
+      <h2>User Login</h2>
+
+      <input [(ngModel)]="username" placeholder="Username" />
+      <input [(ngModel)]="password" type="password" placeholder="Password" />
+
+      <button (click)="login()">LOGIN</button>
+
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }
+
+      <p class="link">
+        Don't have account?
+        <a routerLink="/register">Create one →</a>
+      </p>
+    </div>
+
+  </div>
+</div>

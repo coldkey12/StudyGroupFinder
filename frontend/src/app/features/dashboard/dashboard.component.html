@@ -1,0 +1,30 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard">
+  <h1>Welcome to StudyGroupFinder</h1>
+  <p>Your weekly study overview</p>
+
+  <section class="calendar-section">
+    <h2>This Week</h2>
+    <div class="calendar-grid">
+      @for (day of currentWeek; track day) {
+        <div class="day-card">
+          <h3>{{ day }}</h3>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="sessions-section">
+    <h2>Upcoming Sessions</h2>
+    <div class="session-list">
+      @for (session of upcomingSessions; track session.title) {
+        <div class="session-card">
+          <h3>{{ session.title }}</h3>
+          <p>{{ session.day }} • {{ session.time }}</p>
+          <p>{{ session.room }}</p>
+        </div>
+      }
+    </div>
+  </section>
+</div>
