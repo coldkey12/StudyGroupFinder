@@ -11,7 +11,7 @@
       <p>Мест: {{ session.spots_remaining }} из {{ session.max_participants }}</p>
     </div>
 
-    <!-- RSVP кнопки -->
+
     <div class="rsvp-block">
       @if (!session.is_joined) {
         <button class="btn-join" (click)="join()">Записаться</button>
@@ -20,7 +20,6 @@
       }
     </div>
 
-    <!-- Участники -->
     <div class="participants-block">
       <h3>Участники ({{ participants.length }})</h3>
       @for (p of participants; track p.id) {
@@ -28,7 +27,7 @@
       }
     </div>
 
-    <!-- Комментарии -->
+
     <div class="comments-block">
       <h3>Комментарии</h3>
 

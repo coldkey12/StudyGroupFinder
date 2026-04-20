@@ -1,0 +1,39 @@
+.dashboard {
+  padding: 15px;
+  background: #f8fafc;
+  min-height: calc(100vh - 64px);
+}
+
+.calendar-section,
+.sessions-section {
+  margin-top: 28px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.day-card {
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.session-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.session-card {
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
