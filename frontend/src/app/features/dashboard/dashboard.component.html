@@ -17,13 +17,22 @@
 
   <section class="sessions-section">
     <h2>Upcoming Sessions</h2>
+
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+
+    @if (!error && upcomingSessions.length === 0) {
+      <p class="empty">No upcoming sessions. <a routerLink="/sessions">Browse all sessions</a></p>
+    }
+
     <div class="session-list">
-      @for (session of upcomingSessions; track session.title) {
-        <div class="session-card">
+      @for (session of upcomingSessions; track session.id) {
+        <a class="session-card" [routerLink]="['/sessions', session.id]">
           <h3>{{ session.title }}</h3>
           <p>{{ session.day }} • {{ session.time }}</p>
           <p>{{ session.room }}</p>
-        </div>
+        </a>
       }
     </div>
   </section>

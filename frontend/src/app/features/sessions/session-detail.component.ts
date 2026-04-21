@@ -1,65 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { NavbarComponent } from '../../shared/navbar/navbar.component';
+import { SessionService, Session, Participant } from '../../core/services/session.service';
 import { CommentService, Comment } from '../../core/services/comment.service';
-
-interface Session {
-  id: string;
-  title: string;
-  date: string;
-  start_time: string;
-  end_time: string;
-  location: string;
-  course_name: string;
-  creator_name: string;
-  max_participants: number;
-  spots_remaining: number;
-  is_active: boolean;
-  is_joined?: boolean;
-}
-
-interface Participant {
-  id: string;
-  username: string;
-}
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-session-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink, NavbarComponent],
   templateUrl: './session-detail.component.html',
   styleUrl: './session-detail.component.css'
 })
 export class SessionDetailComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private sessionService = inject(SessionService);
+  private commentService = inject(CommentService);
+  private authService = inject(AuthService);
+
   session: Session | null = null;
   comments: Comment[] = [];
   participants: Participant[] = [];
   commentText = '';
   loading = true;
   error = '';
-  currentUserId: number | null = null;
 
-  private api = 'http://localhost:8000/api';
-
-  constructor(
-    private route: ActivatedRoute,
-    private http: HttpClient,
-    private commentService: CommentService
-  ) {}
+  get username(): string | null {
+    return this.authService.getUsername();
+  }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id')!;
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      this.error = 'Session not found';
+      this.loading = false;
+      return;
+    }
     this.loadSession(id);
     this.loadComments(id);
     this.loadParticipants(id);
   }
 
   loadSession(id: string) {
-    this.http.get<Session>(`${this.api}/sessions/${id}/`).subscribe({
+    this.sessionService.getSession(id).subscribe({
       next: (data) => { this.session = data; this.loading = false; },
-      error: () => { this.error = 'Ошибка загрузки'; this.loading = false; }
+      error: () => { this.error = 'Failed to load session'; this.loading = false; }
     });
   }
 
@@ -70,36 +58,64 @@ export class SessionDetailComponent implements OnInit {
   }
 
   loadParticipants(id: string) {
-    this.http.get<Participant[]>(`${this.api}/sessions/${id}/participants/`).subscribe({
+    this.sessionService.getParticipants(id).subscribe({
       next: (data) => this.participants = data
     });
   }
 
   join() {
     if (!this.session) return;
-    this.http.post(`${this.api}/sessions/${this.session.id}/join/`, {}).subscribe({
-      next: () => { if (this.session) this.session.is_joined = true; this.loadParticipants(this.session!.id); },
-      error: (e) => alert(e.error?.detail || 'Ошибка')
+    this.sessionService.join(this.session.id).subscribe({
+      next: () => {
+        if (this.session) {
+          this.session.is_joined = true;
+          this.session.spots_remaining = Math.max(0, this.session.spots_remaining - 1);
+          this.loadParticipants(this.session.id);
+        }
+      },
+      error: (e) => alert(e?.error?.detail || 'Could not join this session')
     });
   }
 
   leave() {
     if (!this.session) return;
-    this.http.delete(`${this.api}/sessions/${this.session.id}/leave/`).subscribe({
-      next: () => { if (this.session) this.session.is_joined = false; this.loadParticipants(this.session!.id); }
+    this.sessionService.leave(this.session.id).subscribe({
+      next: () => {
+        if (this.session) {
+          this.session.is_joined = false;
+          this.session.spots_remaining += 1;
+          this.loadParticipants(this.session.id);
+        }
+      },
+      error: (e) => alert(e?.error?.detail || 'Could not leave this session')
     });
   }
 
   sendComment() {
-    if (!this.session || !this.commentText.trim()) return;
-    this.commentService.addComment(this.session.id, this.commentText).subscribe({
-      next: (c) => { this.comments.push(c); this.commentText = ''; }
+    const text = this.commentText.trim();
+    if (!this.session || !text) return;
+    this.commentService.addComment(this.session.id, text).subscribe({
+      next: (c) => { this.comments.push(c); this.commentText = ''; },
+      error: () => alert('Could not post comment')
     });
   }
 
   removeComment(id: string) {
     this.commentService.deleteComment(id).subscribe({
       next: () => this.comments = this.comments.filter(c => c.id !== id)
+    });
+  }
+
+  isOwner(): boolean {
+    return !!this.session && this.session.creator_name === this.username;
+  }
+
+  deleteSession() {
+    if (!this.session) return;
+    if (!confirm('Delete this session?')) return;
+    this.sessionService.deleteSession(this.session.id).subscribe({
+      next: () => this.router.navigate(['/sessions']),
+      error: () => alert('Could not delete this session')
     });
   }
 }

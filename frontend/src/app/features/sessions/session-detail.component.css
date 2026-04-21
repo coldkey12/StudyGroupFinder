@@ -28,9 +28,27 @@
 }
 
 .btn-join  { background: #28a745; color: #fff; }
+.btn-join:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-leave { background: #dc3545; color: #fff; }
 .btn-send  { background: #007bff; color: #fff; margin-top: 0.5rem; }
 .btn-delete { background: transparent; color: #dc3545; font-size: 0.8rem; padding: 0.2rem 0.5rem; }
+.btn-edit {
+  background: #fff;
+  color: #1a237e;
+  border: 1px solid #1a237e;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+.btn-delete-session {
+  background: #dc3545;
+  color: #fff;
+  margin-left: 0.5rem;
+}
+.description { color: #444; margin-top: 0.8rem; }
 
 .participants-block {
   margin: 1rem 0;

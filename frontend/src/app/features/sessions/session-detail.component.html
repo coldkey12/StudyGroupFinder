@@ -1,47 +1,56 @@
+<app-navbar></app-navbar>
+
 <div class="session-detail">
-  @if (loading) { <p class="loading">Загрузка...</p> }
+  @if (loading) { <p class="loading">Loading...</p> }
   @if (error) { <p class="error">{{ error }}</p> }
 
   @if (session) {
     <div class="session-header">
       <h2>{{ session.title }}</h2>
       <p class="meta">{{ session.course_name }} · {{ session.creator_name }}</p>
-      <p>📅 {{ session.date }} | {{ session.start_time }} — {{ session.end_time }}</p>
-      <p>📍 {{ session.location }}</p>
-      <p>Мест: {{ session.spots_remaining }} из {{ session.max_participants }}</p>
+      <p>{{ session.date }} | {{ session.start_time }} — {{ session.end_time }}</p>
+      <p>{{ session.location }}</p>
+      <p>Spots: {{ session.spots_remaining }} of {{ session.max_participants }}</p>
+      @if (session.description) {
+        <p class="description">{{ session.description }}</p>
+      }
     </div>
-
 
     <div class="rsvp-block">
       @if (!session.is_joined) {
-        <button class="btn-join" (click)="join()">Записаться</button>
+        <button class="btn-join" (click)="join()" [disabled]="session.spots_remaining === 0">Join</button>
       } @else {
-        <button class="btn-leave" (click)="leave()">Отменить запись</button>
+        <button class="btn-leave" (click)="leave()">Leave</button>
+      }
+      @if (isOwner()) {
+        <a class="btn-edit" [routerLink]="['/sessions', session.id, 'edit']">Edit</a>
+        <button class="btn-delete-session" (click)="deleteSession()">Delete</button>
       }
     </div>
 
     <div class="participants-block">
-      <h3>Участники ({{ participants.length }})</h3>
+      <h3>Participants ({{ participants.length }})</h3>
       @for (p of participants; track p.id) {
         <span class="participant">{{ p.username }}</span>
       }
     </div>
 
-
     <div class="comments-block">
-      <h3>Комментарии</h3>
+      <h3>Comments</h3>
 
       @for (comment of comments; track comment.id) {
         <div class="comment-card">
           <span class="comment-author">{{ comment.author.username }}</span>
           <p>{{ comment.text }}</p>
-          <button class="btn-delete" (click)="removeComment(comment.id)">Удалить</button>
+          @if (comment.author.username === username) {
+            <button class="btn-delete" (click)="removeComment(comment.id)">Delete</button>
+          }
         </div>
       }
 
       <div class="comment-form">
-        <textarea [(ngModel)]="commentText" placeholder="Написать комментарий..." rows="3"></textarea>
-        <button class="btn-send" (click)="sendComment()">Отправить</button>
+        <textarea [(ngModel)]="commentText" placeholder="Write a comment..." rows="3"></textarea>
+        <button class="btn-send" (click)="sendComment()">Send</button>
       </div>
     </div>
   }

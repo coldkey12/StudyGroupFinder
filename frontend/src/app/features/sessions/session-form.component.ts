@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { SessionService, SessionFormData } from '../../core/services/session.service';
 import { CourseService, Course } from '../../core/services/course.service';
 
 @Component({
   selector: 'app-session-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, NavbarComponent],
   templateUrl: './session-form.component.html',
   styleUrl: './session-form.component.css'
 })
@@ -72,9 +73,23 @@ export class SessionFormComponent implements OnInit {
     request.subscribe({
       next: (s) => this.router.navigate(['/sessions', s.id]),
       error: (e) => {
-        this.error = JSON.stringify(e.error);
+        this.error = this.formatError(e?.error);
         this.submitting = false;
       }
     });
+  }
+
+  private formatError(err: unknown): string {
+    if (!err) return 'Could not save session';
+    if (typeof err === 'string') return err;
+    if (typeof err === 'object') {
+      const parts: string[] = [];
+      for (const [field, value] of Object.entries(err as Record<string, unknown>)) {
+        const text = Array.isArray(value) ? value.join(', ') : String(value);
+        parts.push(`${field}: ${text}`);
+      }
+      return parts.join(' | ') || 'Could not save session';
+    }
+    return 'Could not save session';
   }
 }
