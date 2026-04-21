@@ -12,7 +12,7 @@ export interface Comment {
 
 @Injectable({ providedIn: 'root' })
 export class CommentService {
-  private api = 'http://localhost:8000/api';
+  private api = '/api';
 
   constructor(private http: HttpClient) {}
 

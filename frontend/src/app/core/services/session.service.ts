@@ -41,7 +41,7 @@ export interface Participant {
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {
-  private baseUrl = 'http://localhost:8000/api';
+  private baseUrl = '/api';
   private api = `${this.baseUrl}/sessions`;
 
   constructor(private http: HttpClient) {}

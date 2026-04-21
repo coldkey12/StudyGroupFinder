@@ -13,7 +13,7 @@ export interface Course {
 
 @Injectable({ providedIn: 'root' })
 export class CourseService {
-  private api = 'http://localhost:8000/api/courses';
+  private api = '/api/courses';
 
   constructor(private http: HttpClient) {}
 
