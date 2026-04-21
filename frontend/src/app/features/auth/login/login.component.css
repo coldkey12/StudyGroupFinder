@@ -1,47 +1,115 @@
 .container {
+  min-height: 100vh;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 2rem;
 }
 
 .card {
   display: flex;
-  width: 700px;
-  height: 350px;
-  background: white;
-  border-radius: 20px;
+  width: 720px;
+  max-width: 100%;
+  min-height: 400px;
+  background: var(--paper);
+  border: var(--border-thick);
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  box-shadow: 10px 10px 0 var(--ink);
 }
 
 .left {
   flex: 1;
   position: relative;
-  background: linear-gradient(135deg, #ff7e5f, #e84393);
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--paper) 0 14px,
+      var(--paper-dim) 14px 28px
+    );
+  border-right: var(--border-thick);
+  overflow: hidden;
+}
+
+/* Stickman dude */
+.left::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  height: 220px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 220'><g fill='none' stroke='black' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'><circle cx='90' cy='40' r='28' fill='white'/><circle cx='80' cy='36' r='3' fill='black'/><circle cx='100' cy='36' r='3' fill='black'/><path d='M78 50 Q90 58 102 50' fill='none'/><line x1='90' y1='68' x2='90' y2='150'/><line x1='90' y1='90' x2='50' y2='110'/><line x1='90' y1='90' x2='140' y2='80'/><line x1='90' y1='150' x2='60' y2='200'/><line x1='90' y1='150' x2='120' y2='200'/></g></svg>");
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .blob {
   position: absolute;
-  width: 200px;
-  height: 200px;
-  background: linear-gradient(135deg, #a29bfe, #fd79a8);
-  border-radius: 50%;
-  top: 30px;
-  left: 40px;
-  opacity: 0.8;
+  width: 120px;
+  height: 90px;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: 20px;
+  top: 24px;
+  left: 20px;
+  transform: rotate(-6deg);
+  box-shadow: var(--pop-sm);
+}
+
+.blob::before {
+  content: "HELLO!";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  letter-spacing: 2px;
+  font-size: 1.4rem;
+}
+
+.blob::after {
+  content: "";
+  position: absolute;
+  left: 30px;
+  bottom: -18px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 0 solid transparent;
+  border-top: 18px solid var(--ink);
 }
 
 .blob.small {
-  width: 120px;
-  height: 120px;
-  bottom: 20px;
+  width: 110px;
+  height: 60px;
+  top: auto;
+  left: auto;
+  bottom: 26px;
   right: 20px;
+  transform: rotate(4deg);
+  border-radius: 999px;
+}
+
+.blob.small::before {
+  content: "LOG IN PLS";
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.blob.small::after {
+  left: auto;
+  right: 30px;
+  bottom: -16px;
+  border-top-color: var(--ink);
 }
 
 .right {
   flex: 1;
-  padding: 40px;
+  padding: 36px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,38 +117,32 @@
 
 .right h2 {
   margin-bottom: 20px;
+  font-size: 2.2rem;
 }
 
 input {
-  margin-bottom: 15px;
+  margin-bottom: 14px;
   padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: #f1f2f6;
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--paper);
+  font-family: var(--font-body);
   font-size: 14px;
+  box-shadow: var(--pop-sm);
 }
 
 button {
   padding: 12px;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  background: linear-gradient(135deg, #ff7e5f, #e84393);
-  transition: 0.3s;
-}
-
-button:hover {
-  transform: scale(1.03);
+  margin-top: 4px;
+  width: 100%;
 }
 
 .error {
-  color: red;
-  margin-top: 10px;
+  margin-top: 12px;
+  align-self: flex-start;
 }
 
 .link {
-  margin-top: 10px;
+  margin-top: 16px;
   font-size: 14px;
 }

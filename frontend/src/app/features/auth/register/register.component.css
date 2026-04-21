@@ -1,86 +1,146 @@
 .container {
+  min-height: 100vh;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 2rem;
 }
 
 .card {
   display: flex;
-  width: 750px;
-  height: 400px;
-  background: white;
-  border-radius: 20px;
+  width: 760px;
+  max-width: 100%;
+  min-height: 460px;
+  background: var(--paper);
+  border: var(--border-thick);
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  box-shadow: 10px 10px 0 var(--ink);
 }
 
 .left {
   flex: 1;
   position: relative;
-  background: linear-gradient(135deg, #ff7e5f, #e84393);
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      var(--paper) 0 14px,
+      var(--paper-dim) 14px 28px
+    );
+  border-right: var(--border-thick);
+  overflow: hidden;
+}
+
+/* Trollface-inspired grin */
+.left::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><g fill='none' stroke='black' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'><circle cx='100' cy='100' r='80' fill='white'/><circle cx='72' cy='85' r='10' fill='white'/><circle cx='72' cy='85' r='4' fill='black'/><circle cx='128' cy='85' r='10' fill='white'/><circle cx='128' cy='85' r='4' fill='black'/><path d='M45 130 Q100 180 155 130 Q140 138 100 140 Q60 138 45 130 Z' fill='white'/><line x1='60' y1='132' x2='140' y2='132'/></g></svg>");
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .blob {
   position: absolute;
-  width: 220px;
-  height: 220px;
-  background: linear-gradient(135deg, #a29bfe, #fd79a8);
-  border-radius: 50%;
-  top: 30px;
+  width: 130px;
+  height: 72px;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: 999px;
+  top: 28px;
+  left: 24px;
+  transform: rotate(-5deg);
+  box-shadow: var(--pop-sm);
+}
+
+.blob::before {
+  content: "NEW HERE?";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  letter-spacing: 1px;
+  font-size: 1rem;
+}
+
+.blob::after {
+  content: "";
+  position: absolute;
   left: 40px;
-  opacity: 0.8;
+  bottom: -16px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 0 solid transparent;
+  border-top: 16px solid var(--ink);
 }
 
 .blob.small {
-  width: 130px;
-  height: 130px;
-  bottom: 20px;
-  right: 20px;
+  width: 140px;
+  height: 68px;
+  top: auto;
+  left: auto;
+  bottom: 30px;
+  right: 18px;
+  transform: rotate(6deg);
+  border-radius: 18px;
+}
+
+.blob.small::before {
+  content: "JOIN THE SQUAD";
+  font-size: 0.85rem;
+}
+
+.blob.small::after {
+  left: auto;
+  right: 30px;
+  bottom: -14px;
 }
 
 .right {
   flex: 1;
-  padding: 40px;
+  padding: 36px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .right h2 {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  font-size: 2rem;
 }
 
 input {
   margin-bottom: 12px;
   padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: #f1f2f6;
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--paper);
+  font-family: var(--font-body);
   font-size: 14px;
+  box-shadow: var(--pop-sm);
 }
 
 button {
   padding: 12px;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  background: linear-gradient(135deg, #ff7e5f, #e84393);
-  transition: 0.3s;
-}
-
-button:hover {
-  transform: scale(1.03);
+  margin-top: 4px;
+  width: 100%;
 }
 
 .error {
-  color: red;
-  margin-top: 10px;
+  margin-top: 12px;
+  align-self: flex-start;
 }
 
 .link {
-  margin-top: 10px;
+  margin-top: 16px;
   font-size: 14px;
 }

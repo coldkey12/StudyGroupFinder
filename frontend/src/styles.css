@@ -1,1 +1,174 @@
-/* You can add global styles to this file, and also import other style files */
+/* ---------- Global meme-era theme ---------- */
+
+:root {
+  --ink: #000;
+  --paper: #fff;
+  --paper-dim: #f1f1f1;
+  --paper-grid: #e4e4e4;
+  --pop: 6px 6px 0 var(--ink);
+  --pop-sm: 4px 4px 0 var(--ink);
+  --border: 3px solid var(--ink);
+  --border-thick: 4px solid var(--ink);
+  --radius: 4px;
+  --font-body: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Marker Felt", system-ui, sans-serif;
+  --font-title: Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.45;
+  background-image:
+    radial-gradient(var(--paper-grid) 1px, transparent 1px),
+    radial-gradient(var(--paper-grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: 0 0, 11px 11px;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-title);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem;
+  color: var(--ink);
+}
+
+h1 { font-size: 2.4rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.2rem; }
+
+p { margin: 0 0 0.5rem; }
+
+a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-underline-offset: 3px;
+}
+
+a:hover { color: var(--ink); background: #ffeb3b; }
+
+button,
+.btn,
+input[type="submit"] {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 10px 18px;
+  box-shadow: var(--pop-sm);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+}
+
+button:hover,
+.btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+button:active,
+.btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: var(--pop-sm) !important;
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  color: var(--ink);
+  box-shadow: var(--pop-sm);
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+input::placeholder, textarea::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+/* Reusable "panel" card */
+.panel {
+  background: var(--paper);
+  border: var(--border-thick);
+  border-radius: var(--radius);
+  box-shadow: var(--pop);
+  padding: 1.25rem;
+}
+
+/* Badges / tags */
+.tag {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-family: var(--font-title);
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+}
+
+/* Comic speech bubble */
+.bubble {
+  position: relative;
+  background: var(--paper);
+  border: var(--border);
+  border-radius: 18px;
+  padding: 0.6rem 1rem;
+  box-shadow: var(--pop-sm);
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  bottom: -14px;
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 0 solid transparent;
+  border-top: 14px solid var(--ink);
+}
+
+/* Error and status colour hits (still b/w, just inverted) */
+.error {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  display: inline-block;
+}
+
+.loading, .empty {
+  font-style: italic;
+  color: #555;
+}

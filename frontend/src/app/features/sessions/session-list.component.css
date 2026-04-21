@@ -1,18 +1,142 @@
-.sessions-page { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
-.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-.page-header h1 { margin: 0; }
-.sessions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; }
-.session-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; }
-.card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
-.card-header h3 { margin: 0; font-size: 1rem; }
-.card-header a { text-decoration: none; color: #1a237e; }
-.card-header a:hover { text-decoration: underline; }
-.course-badge { background: #e8eaf6; color: #3949ab; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; white-space: nowrap; }
-.meta { margin: 0; color: #666; font-size: 0.875rem; }
-.spots { margin: 0; font-size: 0.875rem; color: #388e3c; }
+.sessions-page {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 6px 16px;
+  transform: rotate(-1deg);
+}
+
+.sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.4rem;
+}
+
+.session-card {
+  background: var(--paper);
+  border: var(--border-thick);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: var(--pop);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.session-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.card-header a {
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.card-header a:hover {
+  background: #ffeb3b;
+}
+
+.course-badge {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: var(--font-title);
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.meta {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.spots {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
 .card-footer { margin-top: auto; }
-.btn-primary { background: #1a237e; color: #fff; border: none; padding: 6px 16px; border-radius: 4px; cursor: pointer; text-decoration: none; font-size: 0.875rem; }
-.btn-secondary { background: #fff; color: #1a237e; border: 1px solid #1a237e; padding: 6px 16px; border-radius: 4px; cursor: pointer; font-size: 0.875rem; }
-.full { color: #c62828; font-size: 0.875rem; }
-.loading, .empty { text-align: center; padding: 3rem; color: #666; }
-.error { color: #c62828; padding: 1rem; }
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+  border: var(--border);
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--font-title);
+  letter-spacing: 1px;
+  font-size: 0.85rem;
+  box-shadow: var(--pop-sm);
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.btn-secondary {
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border);
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: var(--font-title);
+  letter-spacing: 1px;
+  font-size: 0.85rem;
+  box-shadow: var(--pop-sm);
+}
+
+.full {
+  font-family: var(--font-title);
+  letter-spacing: 1px;
+  border: 2px solid var(--ink);
+  padding: 4px 10px;
+  border-radius: var(--radius);
+  display: inline-block;
+}
+
+.loading, .empty {
+  text-align: center;
+  padding: 3rem;
+}
+
+.error {
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
