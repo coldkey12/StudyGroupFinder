@@ -1,0 +1,418 @@
+{
+  "info": {
+    "name": "StudyGroupFinder",
+    "description": "Full API collection for the StudyGroupFinder Django REST backend (auth, courses, sessions, RSVPs, comments).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "access", "value": "" },
+    { "key": "refresh", "value": "" },
+    { "key": "course_id", "value": "" },
+    { "key": "session_id", "value": "" },
+    { "key": "comment_id", "value": "" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{access}}", "type": "string" }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"demo_user\",\n    \"email\": \"demo@kbtu.kz\",\n    \"password\": \"StrongPass123!\",\n    \"password2\": \"StrongPass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const data = pm.response.json();",
+                  "    pm.collectionVariables.set('access', data.access);",
+                  "    pm.collectionVariables.set('refresh', data.refresh);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"demo_user\",\n    \"password\": \"StrongPass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const data = pm.response.json();",
+                  "    pm.collectionVariables.set('access', data.access);",
+                  "    pm.collectionVariables.set('refresh', data.refresh);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Profile (GET)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/auth/profile/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "profile", ""]
+            }
+          }
+        },
+        {
+          "name": "Profile (Update)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bio\": \"Student at KBTU\",\n    \"university\": \"KBTU\",\n    \"major\": \"Computer Science\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/profile/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "profile", ""]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refresh\": \"{{refresh}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/logout/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "logout", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "List courses",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/courses/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "courses", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const list = pm.response.json();",
+                  "    if (list.length) pm.collectionVariables.set('course_id', list[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create course",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Operating Systems\",\n    \"code\": \"CSCI 331\",\n    \"description\": \"Processes, memory, file systems\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/courses/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "courses", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('course_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get course",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/courses/{{course_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "courses", "{{course_id}}", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sessions",
+      "item": [
+        {
+          "name": "List sessions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/sessions/?search=",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sessions", ""],
+              "query": [
+                { "key": "search", "value": "" },
+                { "key": "course", "value": "", "disabled": true },
+                { "key": "date", "value": "", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create session",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Midterm review\",\n    \"description\": \"Chapters 1-5\",\n    \"course\": \"{{course_id}}\",\n    \"date\": \"2026-05-20\",\n    \"start_time\": \"14:00\",\n    \"end_time\": \"16:00\",\n    \"location\": \"Library, Room 301\",\n    \"max_participants\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sessions/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sessions", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('session_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get session",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/sessions/{{session_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sessions", "{{session_id}}", ""]
+            }
+          }
+        },
+        {
+          "name": "Update session",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Midterm review (updated)\",\n    \"description\": \"Chapters 1-6\",\n    \"course\": \"{{course_id}}\",\n    \"date\": \"2026-05-21\",\n    \"start_time\": \"15:00\",\n    \"end_time\": \"17:00\",\n    \"location\": \"Library, Room 302\",\n    \"max_participants\": 12\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sessions/{{session_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sessions", "{{session_id}}", ""]
+            }
+          }
+        },
+        {
+          "name": "Delete session",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/sessions/{{session_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sessions", "{{session_id}}", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "RSVP",
+      "item": [
+        {
+          "name": "Join session",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": {
+              "raw": "{{base_url}}/api/sessions/{{session_id}}/join/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sessions", "{{session_id}}", "join", ""]
+            }
+          }
+        },
+        {
+          "name": "Leave session",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/sessions/{{session_id}}/leave/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sessions", "{{session_id}}", "leave", ""]
+            }
+          }
+        },
+        {
+          "name": "Session participants",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/sessions/{{session_id}}/participants/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sessions", "{{session_id}}", "participants", ""]
+            }
+          }
+        },
+        {
+          "name": "My sessions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/my-sessions/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "my-sessions", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "List comments",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/sessions/{{session_id}}/comments/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sessions", "{{session_id}}", "comments", ""]
+            }
+          }
+        },
+        {
+          "name": "Add comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"See you there!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sessions/{{session_id}}/comments/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sessions", "{{session_id}}", "comments", ""]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('comment_id', pm.response.json().id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete comment",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/comments/{{comment_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "comments", "{{comment_id}}", ""]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
