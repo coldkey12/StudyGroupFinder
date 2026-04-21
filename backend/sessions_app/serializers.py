@@ -10,7 +10,8 @@ class StudySessionSerializer(serializers.ModelSerializer):
     is_overdue = serializers.SerializerMethodField()
     duration_minutes = serializers.SerializerMethodField()
     spots_remaining = serializers.SerializerMethodField()
-    creator_name = serializers.CharField(source="creator.get_full_name", read_only=True)
+    is_joined = serializers.SerializerMethodField()
+    creator_name = serializers.SerializerMethodField()
     course_name = serializers.CharField(source="course.name", read_only=True)
 
     class Meta:
@@ -19,7 +20,7 @@ class StudySessionSerializer(serializers.ModelSerializer):
             "id", "title", "description", "course", "creator",
             "course_name", "creator_name", "date", "start_time", "end_time",
             "location", "max_participants", "is_active",
-            "is_overdue", "duration_minutes", "spots_remaining", "created_at",
+            "is_overdue", "duration_minutes", "spots_remaining", "is_joined", "created_at",
         ]
         read_only_fields = ["id", "creator", "created_at"]
         extra_kwargs = {
@@ -41,6 +42,16 @@ class StudySessionSerializer(serializers.ModelSerializer):
     def get_spots_remaining(self, obj):
         current = getattr(obj, "participants_count", obj.rsvps.count())
         return max(0, obj.max_participants - current)
+
+    def get_is_joined(self, obj):
+        request = self.context.get("request")
+        if not request or not request.user.is_authenticated:
+            return False
+        return obj.rsvps.filter(user=request.user).exists()
+
+    def get_creator_name(self, obj):
+        full_name = obj.creator.get_full_name()
+        return full_name or obj.creator.username
 
     def validate_date(self, value):
         if value < timezone.now().date():
@@ -81,9 +92,12 @@ class RSVPSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author_name = serializers.CharField(source="author.username", read_only=True)
+    author = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
-        fields = ["id", "session", "author", "author_name", "text", "created_at"]
+        fields = ["id", "session", "author", "text", "created_at"]
         read_only_fields = ["id", "session", "author", "created_at"]
+
+    def get_author(self, obj):
+        return {"id": obj.author.id, "username": obj.author.username}

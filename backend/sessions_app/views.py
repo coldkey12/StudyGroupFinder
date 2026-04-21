@@ -29,7 +29,7 @@ class SessionListView(APIView):
         if search:
             qs = qs.filter(title__icontains=search)
 
-        serializer = StudySessionSerializer(qs, many=True)
+        serializer = StudySessionSerializer(qs, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
@@ -50,7 +50,7 @@ class SessionDetailView(APIView):
             session = self._get_session(pk)
         except StudySession.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        return Response(StudySessionSerializer(session).data)
+        return Response(StudySessionSerializer(session, context={"request": request}).data)
 
     def put(self, request, pk):
         try:
@@ -136,7 +136,7 @@ def my_sessions(request):
     sessions = StudySession.objects.filter(pk__in=session_ids).annotate(
         participants_count=Count("rsvps")
     ).select_related("course", "creator")
-    return Response(StudySessionSerializer(sessions, many=True).data)
+    return Response(StudySessionSerializer(sessions, many=True, context={"request": request}).data)
 
 
 @api_view(["DELETE"])
