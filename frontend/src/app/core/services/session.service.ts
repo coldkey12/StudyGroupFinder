@@ -34,9 +34,15 @@ export interface SessionFormData {
   max_participants: number;
 }
 
+export interface Participant {
+  id: string;
+  username: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class SessionService {
-  private api = 'http://localhost:8000/api/sessions';
+  private baseUrl = 'http://localhost:8000/api';
+  private api = `${this.baseUrl}/sessions`;
 
   constructor(private http: HttpClient) {}
 
@@ -52,19 +58,27 @@ export class SessionService {
     return this.http.post<Session>(`${this.api}/`, data);
   }
 
-  updateSession(id: string, data: Partial<SessionFormData>): Observable<Session> {
-    return this.http.patch<Session>(`${this.api}/${id}/`, data);
+  updateSession(id: string, data: SessionFormData): Observable<Session> {
+    return this.http.put<Session>(`${this.api}/${id}/`, data);
   }
 
-  deleteSession(id: string): Observable<any> {
+  deleteSession(id: string): Observable<unknown> {
     return this.http.delete(`${this.api}/${id}/`);
   }
 
-  join(id: string): Observable<any> {
+  join(id: string): Observable<unknown> {
     return this.http.post(`${this.api}/${id}/join/`, {});
   }
 
-  leave(id: string): Observable<any> {
+  leave(id: string): Observable<unknown> {
     return this.http.delete(`${this.api}/${id}/leave/`);
+  }
+
+  getParticipants(id: string): Observable<Participant[]> {
+    return this.http.get<Participant[]>(`${this.api}/${id}/participants/`);
+  }
+
+  getMySessions(): Observable<Session[]> {
+    return this.http.get<Session[]>(`${this.baseUrl}/my-sessions/`);
   }
 }
